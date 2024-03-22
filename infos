@@ -1,0 +1,22 @@
+PLAYER
+{'turno': {'info': 0}, 'nivel_atual': {'info': 1}, 'xp_atual': {'info': 400}}
+
+INVENTARIO
+{'pokeball': {'qtde': 10, 'rate_captura': 1.0}, 'greatball': {'qtde': 0, 'rate_captura': 1.5},
+'ultraball': {'qtde': 0, 'rate_captura': 2.0}, 'masterball': {'qtde': 0, 'rate_captura': 100.0},
+'poke_creditos': {'qtde': 0, 'rate_captura': 0.0}
+
+POKEMON
+{'id': 'poke-063', 'nome': 'Abra', 'tipo_pokemon': 'Psychic', 'evo': 'Kadabra', 'lendario': 'nao', 'apareceu': 1,
+'copy': 0, 'total_copy': 0, 'shiny_apareceu': 0, 'copy_shiny': 0, 'total_shinycopy': 0, 'exp_base': 62,
+'catch_rate': 200}
+
+CORES TERMINAL
+\033[1;31m  \033[m - vermelho
+\033[1;32m  \033[m - verde
+\033[1;33m  \033[m - amarelo
+
+CONSULTAS SQL
+-- select count(*) from registro_captura where capturado = 'True' and shiny = 'False'
+-- select * from registro_captura where capturado = 'True' and shiny = 'False' group by nome_pokemon order by numero_dex
+-- select * from registro_captura where capturado = 'True' and shiny = 'True' group by nome_pokemon order by numero_dex
