@@ -22,21 +22,21 @@ player = {}
 cursor = conexao.execute('SELECT * FROM pokemon')
 resultados = cursor.fetchall()
 for j in resultados:
-    num, dex, nome, tipo_pokemon, evo, lendario, apareceu, copy, total_copy, shiny_apareceu, copy_shiny, \
+    num, dex, nome, poketipo_1, poketipo_2, evo, lendario, apareceu, copy, total_copy, shiny_apareceu, copy_shiny, \
         total_shinycopy, exp_base, catch_rate = j
     pokemon[dex] = {
-        'id': dex, 'nome': nome, 'tipo_pokemon': tipo_pokemon, 'evo': evo, 'lendario': lendario, 'apareceu': apareceu,
-        'copy': copy, 'total_copy': total_copy, 'shiny_apareceu': shiny_apareceu, 'copy_shiny': copy_shiny,
-        'total_shinycopy': total_shinycopy, 'exp_base': exp_base, 'catch_rate': catch_rate
+        'id': dex, 'nome': nome, 'poketipo_1': poketipo_1, 'poketipo_2': poketipo_2, 'evo': evo, 'lendario': lendario,
+        'apareceu': apareceu, 'copy': copy, 'total_copy': total_copy, 'shiny_apareceu': shiny_apareceu,
+        'copy_shiny': copy_shiny, 'total_shinycopy': total_shinycopy, 'exp_base': exp_base, 'catch_rate': catch_rate
     }
 
 # recuperando informações do banco de dados da tabela inventario
 cursor = conexao.execute('SELECT * FROM inventario')
 item_inventario = cursor.fetchall()
 for itens in item_inventario:
-    nome_item, qtde, rate_captura = itens
+    nome_item, qtde, rate_captura, preco_compra, preco_venda = itens
     inventario[nome_item] = {
-        'qtde': qtde, 'rate_captura': rate_captura
+        'qtde': qtde, 'rate_captura': rate_captura, 'preco_compra': preco_compra, 'preco_venda': preco_venda
     }
 
 # recuperando informações do banco de dados da tabela jogador
@@ -86,7 +86,8 @@ pokemons = [
 
 rotas = {
     'rota_1': [], 'rota_2': [], 'rota_3': [], 'rota_4': [], 'rota_5': [],
-    'rota_6': [], 'rota_7': [], 'rota_8': [], 'rota_9': [], 'rota_10': []
+    'rota_6': [], 'rota_7': [], 'rota_8': [], 'rota_9': [], 'rota_10': [],
+    'rota_11': [], 'rota_12': [], 'rota_13': [], 'rota_14': [], 'rota_15': []
 }
 
 index = 1
@@ -95,7 +96,7 @@ while len(pokemons) != 0:
     rotas[f'rota_{index}'].append(random_poke)
     pokemons.remove(random_poke)
     index += 1
-    if index > 10:
+    if index > 15:
         index = 1
 
 rota_atual = rotas['rota_1']
@@ -197,10 +198,10 @@ def reiniciar_jogo():
 def registrar_captura(pokemon_selvagem, capturado, shiny):
     data_atual = dt.now()
     data = str(data_atual)
-    cursor.execute(f"INSERT INTO registro_captura (data, hora, numero_dex, nome_pokemon, tipo_pokemon, capturado, "
-                   f"shiny)"
+    cursor.execute(f"INSERT INTO registro_captura (data, hora, numero_dex, nome_pokemon, tipo_1, tipo_2, "
+                   f"capturado, shiny)"
                    f"VALUES ('{data[:10]}', '{data[11:19]}', '{pokemon_selvagem['id']}', '{pokemon_selvagem['nome']}',"
-                   f"'{pokemon_selvagem['tipo_pokemon']}', '{capturado}', '{shiny}')")
+                   f"'{pokemon_selvagem['poketipo_1']}', '{pokemon_selvagem['poketipo_2']}', '{capturado}', '{shiny}')")
     conexao.commit()
 
 
@@ -222,6 +223,8 @@ def encontrar_pokemon():
         print('Um Pokémon selvagem apareceu!')
         sleep(3)
         poke_selvagem = choice(rota_atual)
+
+        print(poke_selvagem)
 
         if poke_selvagem['lendario'] == 'True':
             print('Encontrou um Pokémon LENDÁRIO', end=' ')
@@ -357,8 +360,12 @@ def pokedex():
     for poke in itens_dex:
         dex = poke[3]
         name = poke[4]
-        type = poke[5]
-        print(f"\033[1;32m# {dex[5:]} {name} - {type}\033[m")
+        type_1 = poke[5]
+        type_2 = poke[6]
+        if type_1 == type_2:
+            print(f"\033[1;32m# {dex[5:]} {name} - {type_1}\033[m")
+        else:
+            print(f"\033[1;32m# {dex[5:]} {name} - {type_1}/{type_2}\033[m")
 
     print('-=' * 20)
     print(f'\033[1;33m{qtde_capturados} / 151 Pokémon Capturados!\033[m'.center(50))
