@@ -9,7 +9,7 @@
 'poke_creditos': {'qtde': 4875, 'rate_captura': 0.0, 'preco_compra': 0.0, 'preco_venda': 0.0}}
 
                                 POKEMON
-{'id': 'poke-041', 'nome': 'Zubat', 'poketipo_1': 'Poison', 'poketipo_2': 'Flying', 'evo': 'Golbat',
+{'id': 'poke-041', 'nome': 'Zubat', 'tipo_1': 'Poison', 'tipo_2': 'Flying', 'evo': 'Golbat',
 'lendario': 'False', 'apareceu': 0, 'copy': 0, 'total_copy': 0, 'shiny_apareceu': 0, 'copy_shiny': 0,
 'total_shinycopy': 0, 'exp_base': 49, 'catch_rate': 255}
 

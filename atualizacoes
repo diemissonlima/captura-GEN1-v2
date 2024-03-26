@@ -1,6 +1,5 @@
 --- Atualizacoes para fazer ---
 * drop de itens
-* market de itens
 * evolucao reformulada
 * captura de lendarios por masterball
 * alterar a rota atual
@@ -13,3 +12,6 @@
 * pokedex reformulada
 * loot de poke creditos
 * separei os tipos de pokemon em duas colunas
+
+* pokemart criado
+* criado uma nova coluna no registro de captura pra saber qual pokebola foi usada

@@ -22,10 +22,10 @@ player = {}
 cursor = conexao.execute('SELECT * FROM pokemon')
 resultados = cursor.fetchall()
 for j in resultados:
-    num, dex, nome, poketipo_1, poketipo_2, evo, lendario, apareceu, copy, total_copy, shiny_apareceu, copy_shiny, \
+    num, dex, nome, tipo_1, tipo_2, evo, lendario, apareceu, copy, total_copy, shiny_apareceu, copy_shiny, \
         total_shinycopy, exp_base, catch_rate = j
     pokemon[dex] = {
-        'id': dex, 'nome': nome, 'poketipo_1': poketipo_1, 'poketipo_2': poketipo_2, 'evo': evo, 'lendario': lendario,
+        'id': dex, 'nome': nome, 'tipo_1': tipo_1, 'tipo_2': tipo_2, 'evo': evo, 'lendario': lendario,
         'apareceu': apareceu, 'copy': copy, 'total_copy': total_copy, 'shiny_apareceu': shiny_apareceu,
         'copy_shiny': copy_shiny, 'total_shinycopy': total_shinycopy, 'exp_base': exp_base, 'catch_rate': catch_rate
     }
@@ -36,7 +36,8 @@ item_inventario = cursor.fetchall()
 for itens in item_inventario:
     nome_item, qtde, rate_captura, preco_compra, preco_venda = itens
     inventario[nome_item] = {
-        'qtde': qtde, 'rate_captura': rate_captura, 'preco_compra': preco_compra, 'preco_venda': preco_venda
+        'nome_item': nome_item.capitalize(), 'qtde': qtde, 'rate_captura': rate_captura, 'preco_compra': preco_compra,
+        'preco_venda': preco_venda
     }
 
 # recuperando informações do banco de dados da tabela jogador
@@ -195,13 +196,14 @@ def reiniciar_jogo():
     conexao.commit()
 
 
-def registrar_captura(pokemon_selvagem, capturado, shiny):
+def registrar_captura(pokemon_selvagem, capturado, shiny, pokebola_usada):
     data_atual = dt.now()
     data = str(data_atual)
     cursor.execute(f"INSERT INTO registro_captura (data, hora, numero_dex, nome_pokemon, tipo_1, tipo_2, "
-                   f"capturado, shiny)"
+                   f"capturado, shiny, pokebola_usada)"
                    f"VALUES ('{data[:10]}', '{data[11:19]}', '{pokemon_selvagem['id']}', '{pokemon_selvagem['nome']}',"
-                   f"'{pokemon_selvagem['poketipo_1']}', '{pokemon_selvagem['poketipo_2']}', '{capturado}', '{shiny}')")
+                   f"'{pokemon_selvagem['tipo_1']}', '{pokemon_selvagem['tipo_2']}', '{capturado}', '{shiny}', "
+                   f"'{pokebola_usada}')")
     conexao.commit()
 
 
@@ -223,8 +225,6 @@ def encontrar_pokemon():
         print('Um Pokémon selvagem apareceu!')
         sleep(3)
         poke_selvagem = choice(rota_atual)
-
-        print(poke_selvagem)
 
         if poke_selvagem['lendario'] == 'True':
             print('Encontrou um Pokémon LENDÁRIO', end=' ')
@@ -279,14 +279,13 @@ def encontrar_pokemon():
 
 # função que executa a captura de um pokémon
 def captura(is_shiny, poke_selvagem, pokeball):
-
     random_number = random.random()
     chance_captura = (poke_selvagem['catch_rate'] / 255) * pokeball['rate_captura']
     print(f'Random Number: {random_number:.2f}')
     print(f"Chance Captura: {chance_captura:.2f}")
     if pokeball["qtde"] > 0:
         pokeball['qtde'] -= 1
-        print('Pokebola Lançada')
+        print(f'Voce joga a {pokeball["nome_item"]}!!!')
 
         if random_number <= chance_captura or random_number >= 1:
 
@@ -303,7 +302,7 @@ def captura(is_shiny, poke_selvagem, pokeball):
                 print(f"\033[1;32mVocê tem {poke_selvagem['copy_shiny']} cópia(s) SHINY!\033[m".center(50))
                 loot_poke_credito('cap_shiny')
                 ganhar_xp(poke_selvagem["exp_base"], 'shiny')
-                registrar_captura(poke_selvagem, 'True', 'True')
+                registrar_captura(poke_selvagem, 'True', 'True', pokeball['nome_item'])
 
             else:
                 print('-=' * 20)
@@ -313,23 +312,23 @@ def captura(is_shiny, poke_selvagem, pokeball):
                 print(f"\033[1;32mVoce tem {poke_selvagem['copy']} cópia(s) dele!\033[m".center(50))
                 loot_poke_credito('cap_normal')
                 ganhar_xp(poke_selvagem["exp_base"], 'normal')
-                registrar_captura(poke_selvagem, 'True', 'False')
+                registrar_captura(poke_selvagem, 'True', 'False', pokeball['nome_item'])
 
         else:
             if is_shiny != 5:
-                registrar_captura(poke_selvagem, 'False', 'False')
+                registrar_captura(poke_selvagem, 'False', 'False', pokeball['nome_item'])
 
             else:
-                registrar_captura(poke_selvagem, 'False', 'True')
+                registrar_captura(poke_selvagem, 'False', 'True', pokeball['nome_item'])
 
             for c in range(1, 6):
                 print(c, end='-> ', flush=True)
                 sleep(0.5)
             print()
-
             print('-=' * 20)
             print(f'\033[1;31m{poke_selvagem["nome"]} Fugiu!\033[m'.center(50))
             print('-=' * 20)
+
     else:
         print("Voce nao tem pokebolas suficiente!")
 
@@ -369,6 +368,48 @@ def pokedex():
 
     print('-=' * 20)
     print(f'\033[1;33m{qtde_capturados} / 151 Pokémon Capturados!\033[m'.center(50))
+
+
+def pokemart():
+    print('Bemvindo ao Pokémart')
+    while True:
+        opcao = leiaInt('O que você deseja? [ 1 ] Comprar [ 2 ] Vender [ 3 ] Sair: ')
+        if opcao == 1:
+            print(f"PokéCréditos Disponíveis: P$ {inventario['poke_creditos']['qtde']}")
+            print('Itens Disponíveis:')
+            print(f'1 - PokeBall P$ 50\n2 - GreatBall P$ 120\n'
+                  f'3 - UltraBall P$ 200\n4 - MasterBall P$ 1500')
+            compra = leiaInt("O que deseja comprar? ")
+            match compra:
+                case 1:
+                    item_target = inventario['pokeball']
+                case 2:
+                    item_target = inventario['greatball']
+                case 3:
+                    item_target = inventario['ultraball']
+                case 4:
+                    item_target = inventario['masterball']
+
+            qtde_compra = leiaInt("Digite a quantidade desejada: ")
+            valor_compra = int(qtde_compra * item_target['preco_compra'])
+
+            if valor_compra > inventario['poke_creditos']['qtde']:
+                print('-=' * 20)
+                print('\033[1;31mPoké Creditos insuficientes\033[m'.center(40))
+                print('-=' * 20)
+            else:
+                inventario['poke_creditos']['qtde'] -= valor_compra
+                item_target['qtde'] += qtde_compra
+                print('-=' * 20)
+                print(f'\033[1;32m{item_target["nome_item"]} Comprada: {qtde_compra}\nValor Compra: P$ {valor_compra}\n'
+                      f'Poké Créditos Restantes: P$ {inventario["poke_creditos"]["qtde"]}\033[m')
+                print('-=' * 20)
+
+        elif opcao == 2:
+            break
+
+        elif opcao == 3:
+            break
 
 
 def ganhar_xp(xp_recebida, type_pokemon):
@@ -430,10 +471,6 @@ def loot_poke_credito(type_pokemon):
 
 
 # Programa Principal
-print('-=' * 20)
-print('Captura Pokémon'.center(40))
-print('-=' * 20)
-
 while True:
     print('-=' * 20)
     print('Menu Principal'.center(40))
@@ -450,8 +487,8 @@ while True:
     #     evolucao()
     elif opcao == 3:
         pokedex()
-    # elif opcao == 4:
-    #     pokemart()
+    elif opcao == 4:
+        pokemart()
     # elif opcao == 5:
     #     mudar_rota()
     elif opcao == 6:
