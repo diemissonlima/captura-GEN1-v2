@@ -241,9 +241,17 @@ def encontrar_pokemon():
             print('-=' * 20)
             if shiny == 5:
                 print(f'\033[1;33mEncontrou um >> {poke_selvagem["nome"]} SHINY!!! <<\033[m'.center(50))
+                if poke_selvagem['tipo_2'] == poke_selvagem['tipo_1']:
+                    print(f'\033[1;33mTipo: {poke_selvagem["tipo_1"]}\033[m'.center(50))
+                else:
+                    print(f'\033[1;33mTipo: {poke_selvagem["tipo_1"]}/{poke_selvagem["tipo_2"]}\033[m'.center(50))
                 poke_selvagem["shiny_apareceu"] += 1
             else:
                 print(f'\033[1;33mEncontrou um >> {poke_selvagem["nome"]} <<\033[m'.center(50))
+                if poke_selvagem['tipo_2'] == poke_selvagem['tipo_1']:
+                    print(f'\033[1;33mTipo: {poke_selvagem["tipo_1"]}\033[m'.center(50))
+                else:
+                    print(f'\033[1;33mTipo: {poke_selvagem["tipo_1"]}/{poke_selvagem["tipo_2"]}\033[m'.center(50))
                 poke_selvagem["apareceu"] += 1
 
         if poke_selvagem['total_copy'] > 0 or poke_selvagem['total_shinycopy'] > 0:
@@ -273,16 +281,14 @@ def encontrar_pokemon():
             opcao = leiaInt('Voltar ao Menu Principal? [ 1 ] Sim [ 2 ] Não: ')
             if opcao == 1:
                 break
-        else:
-            break
 
 
 # função que executa a captura de um pokémon
 def captura(is_shiny, poke_selvagem, pokeball):
     random_number = random.random()
-    chance_captura = (poke_selvagem['catch_rate'] / 255) * pokeball['rate_captura']
-    print(f'Random Number: {random_number:.2f}')
-    print(f"Chance Captura: {chance_captura:.2f}")
+    chance_captura = ((poke_selvagem['catch_rate'] / 255) * pokeball['rate_captura'])
+    # print(f'Random Number: {random_number:.2f}')
+    # print(f"Chance Captura: {chance_captura:.2f}")
     if pokeball["qtde"] > 0:
         pokeball['qtde'] -= 1
         print(f'Voce joga a {pokeball["nome_item"]}!!!')
@@ -326,7 +332,7 @@ def captura(is_shiny, poke_selvagem, pokeball):
                 sleep(0.5)
             print()
             print('-=' * 20)
-            print(f'\033[1;31m{poke_selvagem["nome"]} Fugiu!\033[m'.center(50))
+            print(f'\033[1;31m Que pena :-(, {poke_selvagem["nome"]} escapou!\033[m'.center(50))
             print('-=' * 20)
 
     else:
@@ -377,21 +383,23 @@ def pokemart():
         if opcao == 1:
             print(f"PokéCréditos Disponíveis: P$ {inventario['poke_creditos']['qtde']}")
             print('Itens Disponíveis:')
-            print(f'1 - PokeBall P$ 50\n2 - GreatBall P$ 120\n'
-                  f'3 - UltraBall P$ 200\n4 - MasterBall P$ 1500')
+            print(f'1 - {inventario["pokeball"]["nome_item"]}   P$ {int(inventario["pokeball"]["preco_compra"])}\n'
+                  f'2 - {inventario["greatball"]["nome_item"]}  P$ {int(inventario["greatball"]["preco_compra"])}\n'
+                  f'3 - {inventario["ultraball"]["nome_item"]}  P$ {int(inventario["ultraball"]["preco_compra"])}\n'
+                  f'4 - {inventario["masterball"]["nome_item"]} P$ {int(inventario["masterball"]["preco_compra"])}')
             compra = leiaInt("O que deseja comprar? ")
             match compra:
                 case 1:
-                    item_target = inventario['pokeball']
+                    item_compra = inventario['pokeball']
                 case 2:
-                    item_target = inventario['greatball']
+                    item_compra = inventario['greatball']
                 case 3:
-                    item_target = inventario['ultraball']
+                    item_compra = inventario['ultraball']
                 case 4:
-                    item_target = inventario['masterball']
+                    item_compra = inventario['masterball']
 
             qtde_compra = leiaInt("Digite a quantidade desejada: ")
-            valor_compra = int(qtde_compra * item_target['preco_compra'])
+            valor_compra = int(qtde_compra * item_compra['preco_compra'])
 
             if valor_compra > inventario['poke_creditos']['qtde']:
                 print('-=' * 20)
@@ -399,10 +407,11 @@ def pokemart():
                 print('-=' * 20)
             else:
                 inventario['poke_creditos']['qtde'] -= valor_compra
-                item_target['qtde'] += qtde_compra
+                item_compra['qtde'] += qtde_compra
                 print('-=' * 20)
-                print(f'\033[1;32m{item_target["nome_item"]} Comprada: {qtde_compra}\nValor Compra: P$ {valor_compra}\n'
-                      f'Poké Créditos Restantes: P$ {inventario["poke_creditos"]["qtde"]}\033[m')
+                print(
+                    f'\033[1;32mVocê comprou {qtde_compra} {item_compra["nome_item"]}(s)\nValor Compra: P$ {valor_compra}\n'
+                    f'Poké Créditos Restantes: P$ {inventario["poke_creditos"]["qtde"]}\033[m')
                 print('-=' * 20)
 
         elif opcao == 2:
@@ -428,21 +437,26 @@ def ganhar_xp(xp_recebida, type_pokemon):
 
     player['xp_atual']['info'] += xp
 
+    print(f'\033[1;32m>>> + {xp} XP! <<<\033[m'.center(50))
+
     if player['xp_atual']['info'] >= level_dict[str(player['nivel_atual']['info'])] and player['nivel_atual'][
         'info'] < 50:
         leftover = player['xp_atual']['info'] - level_dict[str(player['nivel_atual']['info'])]
         player['xp_atual']['info'] = leftover
         player['nivel_atual']['info'] += 1
         inventario['poke_creditos']['qtde'] += 300
-        print(f'\033[1;32mSubiu para o nível {player["nivel_atual"]["info"]}!\033[m'.center(50))
+        inventario['pokeball']['qtde'] += 5
 
-        print(f'\033[1;32mVocê ganhou P$ 300 Poké Créditos!!!\033[m'.center(50))
+        print('-=' * 20)
+        print(f'\033[1;32mSubiu para o nível {player["nivel_atual"]["info"]}!\033[m'.center(50))
+        print(f'\033[1;32m Bônus de +P$ 300 Poké Créditos!\033[m'.center(50))
+        print(f'\033[1;32m Bônus de +5 Pokeball!\033[m'.center(50))
+        print('-=' * 20)
 
     elif player['xp_atual']['info'] >= level_dict[str(player['nivel_atual']['info'])] and player['nivel_atual'][
         'info'] == 9:
         player['xp_atual']['info'] = level_dict[str(player['nivel_atual']['info'])]
 
-    print(f'\033[1;32m>>> + {xp} XP! <<<\033[m'.center(50))
     print(f'\033[1;32mNivel: {player["nivel_atual"]["info"]}\033[m'.center(50))
     print(
         f'\033[1;32mBarra EXP: {player["xp_atual"]["info"]} / {level_dict[str(player["nivel_atual"]["info"])]}\033[m'.center(
@@ -475,9 +489,8 @@ while True:
     print('-=' * 20)
     print('Menu Principal'.center(40))
     print('-=' * 20)
-    print('\033[1;31m[ 1 ] - Procurar Pokémon\n[ 2 ] - Evoluir Pokémon\n'
-          '[ 3 ] - Mostrar Pokédex\n[ 4 ] - Pokémart\n'
-          '[ 5 ] - Mudar Rota\n[ 6 ] - Reiniciar Jogo\n[ 7 ] - Sair do Jogo\033[m')
+    print('\033[1;31m[ 1 ] - Procurar Pokémon\n[ 2 ] - Pokedéx\n'
+          '[ 3 ] - Pokémart\n[ 4 ] - Reiniciar Jogo\n[ 5 ] - Sair do Jogo\033[m')
     print('-=' * 15)
     opcao = leiaInt('Qual sua opção? ')
 
@@ -485,18 +498,18 @@ while True:
         encontrar_pokemon()
     # elif opcao == 2:
     #     evolucao()
-    elif opcao == 3:
+    elif opcao == 2:
         pokedex()
-    elif opcao == 4:
+    elif opcao == 3:
         pokemart()
     # elif opcao == 5:
     #     mudar_rota()
-    elif opcao == 6:
+    elif opcao == 4:
         reiniciar_jogo()
         print('O jogo será fechado...')
         input('Pressione ENTER para fechar...')
         break
-    elif opcao == 7:
+    elif opcao == 5:
         fim_jogo = leiaInt('Confirma? [ 1 ] Sim [ 2 ] Nao: ')
         if fim_jogo == 1:
             salvar_dados()
