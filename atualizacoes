@@ -15,3 +15,8 @@
 * pokemart criado
 * criado uma nova coluna no registro de captura pra saber qual pokebola foi usada
 * possibilidade de tentar capturar pokemon novamente caso ele escape
+
+* refeito o calculo de captura de pokemon considerando os tipos de pokebolas especiais
+* adicionado a pokeball fire que tem +3.5x chance de capturar pokemon do tipo fire
+* adicionado a pokeball water que tem +3.5x chance de capturar pokemon do tipo water
+* adicionado a pokeball grass que tem +3.5x chance de capturar pokemon do tipo grass

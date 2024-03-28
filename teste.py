@@ -34,10 +34,10 @@ for j in resultados:
 cursor = conexao.execute('SELECT * FROM inventario')
 item_inventario = cursor.fetchall()
 for itens in item_inventario:
-    nome_item, qtde, rate_captura, preco_compra, preco_venda = itens
+    id_item, nome_item, tipo_item, qtde, rate_captura, rate_bonus, preco_compra, preco_venda = itens
     inventario[nome_item] = {
-        'nome_item': nome_item.capitalize(), 'qtde': qtde, 'rate_captura': rate_captura, 'preco_compra': preco_compra,
-        'preco_venda': preco_venda
+        'id': id_item, 'nome_item': nome_item.title(), 'tipo_item': tipo_item, 'qtde': qtde,
+        'rate_captura': rate_captura, 'rate_bonus': rate_bonus, 'preco_compra': preco_compra, 'preco_venda': preco_venda
     }
 
 # recuperando informações do banco de dados da tabela jogador
@@ -48,6 +48,7 @@ for itens in player_info:
     player[item] = {
         'info': quantidade
     }
+
 
 # # lista de pokemon que é usada como base pra adicionar pokemon ja capturados na lista de capturados quando recuperar
 # # os dados a partir do banco de dados, nela vai todos os pokemons
@@ -170,8 +171,10 @@ def salvar_dados():
     cursor.execute(f"UPDATE inventario SET quantidade = {inventario['greatball']['qtde']} WHERE item = 'greatball'")
     cursor.execute(f"UPDATE inventario SET quantidade = {inventario['ultraball']['qtde']} WHERE item = 'ultraball'")
     cursor.execute(f"UPDATE inventario SET quantidade = {inventario['masterball']['qtde']} WHERE item = 'masterball'")
-    cursor.execute(
-        f"UPDATE inventario SET quantidade = {inventario['poke_creditos']['qtde']} WHERE item = 'poke_creditos'")
+    cursor.execute(f"UPDATE inventario SET quantidade = {inventario['pokeball fire']['qtde']} WHERE item = 'pokeball fire'")
+    cursor.execute(f"UPDATE inventario SET quantidade = {inventario['pokeball water']['qtde']} WHERE item = 'pokeball water'")
+    cursor.execute(f"UPDATE inventario SET quantidade = {inventario['pokeball grass']['qtde']} WHERE item = 'pokeball grass'")
+    cursor.execute(f"UPDATE inventario SET quantidade = {inventario['poke_creditos']['qtde']} WHERE item = 'poke_creditos'")
 
 
 # reinicia o jogo com os valores padrao de cada coluna
@@ -184,6 +187,9 @@ def reiniciar_jogo():
     cursor.execute(f"UPDATE inventario SET quantidade = {0} WHERE item = 'ultraball'")
     cursor.execute(f"UPDATE inventario SET quantidade = {0} WHERE item = 'masterball'")
     cursor.execute(f"UPDATE inventario SET quantidade = {0} WHERE item = 'poke_creditos'")
+    cursor.execute(f"UPDATE inventario SET quantidade = {0} WHERE item = 'pokeball fire'")
+    cursor.execute(f"UPDATE inventario SET quantidade = {0} WHERE item = 'pokeball water'")
+    cursor.execute(f"UPDATE inventario SET quantidade = {0} WHERE item = 'pokeball grass'")
 
     cursor.execute(f"UPDATE jogador SET quantidade = {0} WHERE item = 'turno'")
     cursor.execute(f"UPDATE jogador SET quantidade = {1} WHERE item = 'nivel_atual'")
@@ -203,7 +209,7 @@ def registrar_captura(pokemon_selvagem, capturado, shiny, pokebola_usada):
                    f"capturado, shiny, pokebola_usada)"
                    f"VALUES ('{data[:10]}', '{data[11:19]}', '{pokemon_selvagem['id']}', '{pokemon_selvagem['nome']}',"
                    f"'{pokemon_selvagem['tipo_1']}', '{pokemon_selvagem['tipo_2']}', '{capturado}', '{shiny}', "
-                   f"'{pokebola_usada}')")
+                   f"'{pokebola_usada.title()}')")
     conexao.commit()
 
 
@@ -265,10 +271,13 @@ def encontrar_pokemon():
 
         opcao = leiaInt('Deseja capturá-lo? [ 1 ] Sim [ 2 ] Nao: ')
         if opcao == 1:
-            print(f'\033[1;31m[ 1 ] Pokébola: {inventario["pokeball"]["qtde"]:>5}\n'
-                  f'[ 2 ] Great Ball: {inventario["greatball"]["qtde"]:>3}\n'
-                  f'[ 3 ] Ultra Ball: {inventario["ultraball"]["qtde"]:>3}\033[m')
-            usar_pokebola = leiaInt('Qual Pokébola usar?  ')
+            print(f'\033[1;31m[ 1 ] Poké Ball: {inventario["pokeball"]["qtde"]:>4}   '
+                  f'[ 2 ] Great Ball: {inventario["greatball"]["qtde"]:>1}\n'
+                  f'[ 3 ] Ultra Ball: {inventario["ultraball"]["qtde"]:>3}   '
+                  f'[ 4 ] Fire Ball: {inventario["pokeball fire"]["qtde"]:>2}\n'
+                  f'[ 5 ] Water Ball: {inventario["pokeball water"]["qtde"]:>3}   '
+                  f'[ 6 ] Grass Ball: {inventario["pokeball grass"]["qtde"]:>1}\033[m')
+            usar_pokebola = leiaInt('Qual Pokébola usar? ')
             match usar_pokebola:
                 case 1:
                     pokeball = inventario["pokeball"]
@@ -276,6 +285,12 @@ def encontrar_pokemon():
                     pokeball = inventario["greatball"]
                 case 3:
                     pokeball = inventario["ultraball"]
+                case 4:
+                    pokeball = inventario["pokeball fire"]
+                case 5:
+                    pokeball = inventario["pokeball water"]
+                case 6:
+                    pokeball = inventario["pokeball grass"]
 
             captura(shiny, poke_selvagem, pokeball)
 
@@ -287,12 +302,17 @@ def encontrar_pokemon():
 # função que executa a captura de um pokémon
 def captura(is_shiny, poke_selvagem, pokeball):
     while True:
+        bonus_rate = pokeball['rate_bonus']
         random_number = random.random()
-        chance_captura = ((poke_selvagem['catch_rate'] / 255) * pokeball['rate_captura'])
+        if poke_selvagem['tipo_1'] == pokeball['tipo_item'] or poke_selvagem['tipo_2'] == pokeball['tipo_item']:
+            chance_captura = ((poke_selvagem['catch_rate'] / 255) * pokeball['rate_captura']) * bonus_rate
+        else:
+            chance_captura = ((poke_selvagem['catch_rate'] / 255) * pokeball['rate_captura'])
+        # print('-=' * 20)
         # print(f'Random Number: {random_number:.2f}')
         # print(f"Chance Captura: {chance_captura:.2f}")
+        # print('-=' * 20)
         if pokeball["qtde"] > 0:
-            pokeball['qtde'] -= 1
             print(f'Voce joga a {pokeball["nome_item"]}!!!')
 
             if random_number <= chance_captura or random_number >= 1:
@@ -339,11 +359,16 @@ def captura(is_shiny, poke_selvagem, pokeball):
                 print(f'\033[1;31m Que pena :-(, {poke_selvagem["nome"]} escapou!\033[m'.center(50))
                 print('-=' * 20)
 
+            pokeball['qtde'] -= 1
+
             retry = leiaInt('Tentar a captura novamente? [ 1 ] Sim [ 2 ] Nao: ')
             if retry == 1:
-                print(f'\033[1;31m[ 1 ] Pokébola: {inventario["pokeball"]["qtde"]:>5}\n'
-                      f'[ 2 ] Great Ball: {inventario["greatball"]["qtde"]:>3}\n'
-                      f'[ 3 ] Ultra Ball: {inventario["ultraball"]["qtde"]:>3}\033[m')
+                print(f'\033[1;31m[ 1 ] Poké Ball: {inventario["pokeball"]["qtde"]:>4}   '
+                      f'[ 2 ] Great Ball: {inventario["greatball"]["qtde"]:>1}\n'
+                      f'[ 3 ] Ultra Ball: {inventario["ultraball"]["qtde"]:>3}   '
+                      f'[ 4 ] Fire Ball: {inventario["pokeball fire"]["qtde"]:>2}\n'
+                      f'[ 5 ] Water Ball: {inventario["pokeball water"]["qtde"]:>3}   '
+                      f'[ 6 ] Grass Ball: {inventario["pokeball grass"]["qtde"]:>1}\033[m')
                 opcao = leiaInt('Escolha a Pokebola: ')
                 match opcao:
                     case 1:
@@ -352,6 +377,12 @@ def captura(is_shiny, poke_selvagem, pokeball):
                         pokeball = inventario['greatball']
                     case 3:
                         pokeball = inventario['ultraball']
+                    case 4:
+                        pokeball = inventario['pokeball fire']
+                    case 5:
+                        pokeball = inventario['pokeball water']
+                    case 6:
+                        pokeball = inventario['pokeball grass']
             elif retry == 2:
                 break
 
@@ -406,7 +437,10 @@ def pokemart():
             print(f'1 - {inventario["pokeball"]["nome_item"]}   P$ {int(inventario["pokeball"]["preco_compra"])}\n'
                   f'2 - {inventario["greatball"]["nome_item"]}  P$ {int(inventario["greatball"]["preco_compra"])}\n'
                   f'3 - {inventario["ultraball"]["nome_item"]}  P$ {int(inventario["ultraball"]["preco_compra"])}\n'
-                  f'4 - {inventario["masterball"]["nome_item"]} P$ {int(inventario["masterball"]["preco_compra"])}')
+                  f'4 - {inventario["masterball"]["nome_item"]} P$ {int(inventario["masterball"]["preco_compra"])}\n'
+                  f'5 - {inventario["pokeball fire"]["nome_item"]} P$ {int(inventario["pokeball fire"]["preco_compra"])}\n'
+                  f'6 - {inventario["pokeball water"]["nome_item"]} P$ {int(inventario["pokeball water"]["preco_compra"])}\n'
+                  f'7 - {inventario["pokeball grass"]["nome_item"]} P$ {int(inventario["pokeball grass"]["preco_compra"])}')
             compra = leiaInt("O que deseja comprar? ")
             match compra:
                 case 1:
@@ -417,6 +451,12 @@ def pokemart():
                     item_compra = inventario['ultraball']
                 case 4:
                     item_compra = inventario['masterball']
+                case 5:
+                    item_compra = inventario['pokeball fire']
+                case 6:
+                    item_compra = inventario['pokeball water']
+                case 7:
+                    item_compra = inventario['pokeball grass']
 
             qtde_compra = leiaInt("Digite a quantidade desejada: ")
             valor_compra = int(qtde_compra * item_compra['preco_compra'])

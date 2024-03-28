@@ -2,11 +2,16 @@
 {'turno': {'info': 0}, 'nivel_atual': {'info': 1}, 'xp_atual': {'info': 400}}
 
                                 INVENTARIO
-{'pokeball': {'nome_item': 'Pokeball', 'qtde': 37, 'rate_captura': 1.0, 'preco_compra': 50.0, 'preco_venda': 25.0},
-'greatball': {'nome_item': 'Greatball', 'qtde': 4, 'rate_captura': 1.5, 'preco_compra': 100.0, 'preco_venda': 50.0},
-'ultraball': {'nome_item': 'Ultraball', 'qtde': 7, 'rate_captura': 2.0, 'preco_compra': 150.0, 'preco_venda': 75.0},
-'masterball': {'nome_item': 'Masterball', 'qtde': 0, 'rate_captura': 100.0, 'preco_compra': 500.0, 'preco_venda': 250.0},
-'poke_creditos': {'nome_item': 'Poke_creditos', 'qtde': 899, 'rate_captura': 0.0, 'preco_compra': 0.0, 'preco_venda': 0.0}}
+{'pokeball': {'id': 1, 'nome_item': 'Pokeball', 'tipo_item': 'normal', 'qtde': 42, 'rate_captura': 1.0,
+'rate_bonus': 1.0, 'preco_compra': 50.0, 'preco_venda': 25.0}, 'greatball': {'id': 2, 'nome_item': 'Greatball',
+'tipo_item': 'normal', 'qtde': 4, 'rate_captura': 1.5, 'rate_bonus': 1.5, 'preco_compra': 100.0,
+'preco_venda': 50.0}, 'ultraball': {'id': 3, 'nome_item': 'Ultraball', 'tipo_item': 'normal', 'qtde': 7,
+'rate_captura': 2.0, 'rate_bonus': 2.0, 'preco_compra': 150.0, 'preco_venda': 75.0},
+'masterball': {'id': 4, 'nome_item': 'Masterball', 'tipo_item': 'normal', 'qtde': 0, 'rate_captura': 100.0,
+'rate_bonus': 100.0, 'preco_compra': 500.0, 'preco_venda': 250.0},
+'poke_creditos': {'id': 5, 'nome_item': 'Poke_creditos', 'tipo_item': 'dinheiro', 'qtde': 1318, 'rate_captura': 0.0,
+'rate_bonus': 0.0, 'preco_compra': 0.0, 'preco_venda': 0.0}, 'pokeball_fire': {'id': 6, 'nome_item': 'Pokeball_fire',
+'tipo_item': 'fire', 'qtde': 1, 'rate_captura': 1.0, 'rate_bonus': 2.5, 'preco_compra': 200.0, 'preco_venda': 100.0}}
 
 
                                 POKEMON
