@@ -49,6 +49,7 @@ for itens in player_info:
         'info': quantidade
     }
 
+
 # # lista de pokemon que é usada como base pra adicionar pokemon ja capturados na lista de capturados quando recuperar
 # # os dados a partir do banco de dados, nela vai todos os pokemons
 pokemons = [
@@ -269,12 +270,13 @@ def encontrar_pokemon():
                   f'[ 2 ] Great Ball: {inventario["greatball"]["qtde"]:>3}\n'
                   f'[ 3 ] Ultra Ball: {inventario["ultraball"]["qtde"]:>3}\033[m')
             usar_pokebola = leiaInt('Qual Pokébola usar?  ')
-            if usar_pokebola == 1:
-                pokeball = inventario["pokeball"]
-            elif usar_pokebola == 2:
-                pokeball = inventario["greatball"]
-            elif usar_pokebola == 3:
-                pokeball = inventario["ultraball"]
+            match usar_pokebola:
+                case 1:
+                    pokeball = inventario["pokeball"]
+                case 2:
+                    pokeball = inventario["greatball"]
+                case 3:
+                    pokeball = inventario["ultraball"]
 
             captura(shiny, poke_selvagem, pokeball)
 
@@ -285,58 +287,78 @@ def encontrar_pokemon():
 
 # função que executa a captura de um pokémon
 def captura(is_shiny, poke_selvagem, pokeball):
-    random_number = random.random()
-    chance_captura = ((poke_selvagem['catch_rate'] / 255) * pokeball['rate_captura'])
-    # print(f'Random Number: {random_number:.2f}')
-    # print(f"Chance Captura: {chance_captura:.2f}")
-    if pokeball["qtde"] > 0:
-        pokeball['qtde'] -= 1
-        print(f'Voce joga a {pokeball["nome_item"]}!!!')
+    while True:
+        random_number = random.random()
+        chance_captura = ((poke_selvagem['catch_rate'] / 255) * pokeball['rate_captura'])
+        # print(f'Random Number: {random_number:.2f}')
+        # print(f"Chance Captura: {chance_captura:.2f}")
+        if pokeball["qtde"] > 0:
+            print(f'Voce joga a {pokeball["nome_item"]}!!!')
 
-        if random_number <= chance_captura or random_number >= 1:
+            if random_number <= chance_captura or random_number >= 1:
 
-            for c in range(1, 6):
-                print(c, end='-> ', flush=True)
-                sleep(0.5)
-            print()
+                for c in range(1, 6):
+                    print(c, end='-> ', flush=True)
+                    sleep(0.5)
+                print()
 
-            if is_shiny == 5:
-                print('-=' * 20)
-                poke_selvagem["copy_shiny"] += 1
-                poke_selvagem["total_shinycopy"] += 1
-                print(f"\033[1;32m{poke_selvagem['nome']} SHINY capturado!\033[m".center(50))
-                print(f"\033[1;32mVocê tem {poke_selvagem['copy_shiny']} cópia(s) SHINY!\033[m".center(50))
-                loot_poke_credito('cap_shiny')
-                ganhar_xp(poke_selvagem["exp_base"], 'shiny')
-                registrar_captura(poke_selvagem, 'True', 'True', pokeball['nome_item'])
+                if is_shiny == 5:
+                    print('-=' * 20)
+                    poke_selvagem["copy_shiny"] += 1
+                    poke_selvagem["total_shinycopy"] += 1
+                    print(f"\033[1;32m{poke_selvagem['nome']} SHINY capturado!\033[m".center(50))
+                    print(f"\033[1;32mVocê tem {poke_selvagem['copy_shiny']} cópia(s) SHINY!\033[m".center(50))
+                    loot_poke_credito('cap_shiny')
+                    ganhar_xp(poke_selvagem["exp_base"], 'shiny')
+                    registrar_captura(poke_selvagem, 'True', 'True', pokeball['nome_item'])
+
+                else:
+                    print('-=' * 20)
+                    poke_selvagem['copy'] += 1
+                    poke_selvagem['total_copy'] += 1
+                    print(f'\033[1;32m{poke_selvagem["nome"]} Capturado!\033[m'.center(50))
+                    print(f"\033[1;32mVoce tem {poke_selvagem['copy']} cópia(s) dele!\033[m".center(50))
+                    loot_poke_credito('cap_normal')
+                    ganhar_xp(poke_selvagem["exp_base"], 'normal')
+                    registrar_captura(poke_selvagem, 'True', 'False', pokeball['nome_item'])
+
+                break
 
             else:
+                if is_shiny != 5:
+                    registrar_captura(poke_selvagem, 'False', 'False', pokeball['nome_item'])
+
+                else:
+                    registrar_captura(poke_selvagem, 'False', 'True', pokeball['nome_item'])
+
+                for c in range(1, 6):
+                    print(c, end='-> ', flush=True)
+                    sleep(0.5)
+                print()
                 print('-=' * 20)
-                poke_selvagem['copy'] += 1
-                poke_selvagem['total_copy'] += 1
-                print(f'\033[1;32m{poke_selvagem["nome"]} Capturado!\033[m'.center(50))
-                print(f"\033[1;32mVoce tem {poke_selvagem['copy']} cópia(s) dele!\033[m".center(50))
-                loot_poke_credito('cap_normal')
-                ganhar_xp(poke_selvagem["exp_base"], 'normal')
-                registrar_captura(poke_selvagem, 'True', 'False', pokeball['nome_item'])
+                print(f'\033[1;31m Que pena :-(, {poke_selvagem["nome"]} escapou!\033[m'.center(50))
+                print('-=' * 20)
+
+            pokeball['qtde'] -= 1
+
+            retry = leiaInt('Tentar a captura novamente? [ 1 ] Sim [ 2 ] Nao: ')
+            if retry == 1:
+                print(f'\033[1;31m[ 1 ] Pokébola: {inventario["pokeball"]["qtde"]:>5}\n'
+                      f'[ 2 ] Great Ball: {inventario["greatball"]["qtde"]:>3}\n'
+                      f'[ 3 ] Ultra Ball: {inventario["ultraball"]["qtde"]:>3}\033[m')
+                opcao = leiaInt('Escolha a Pokebola: ')
+                match opcao:
+                    case 1:
+                        pokeball = inventario['pokeball']
+                    case 2:
+                        pokeball = inventario['greatball']
+                    case 3:
+                        pokeball = inventario['ultraball']
+            elif retry == 2:
+                break
 
         else:
-            if is_shiny != 5:
-                registrar_captura(poke_selvagem, 'False', 'False', pokeball['nome_item'])
-
-            else:
-                registrar_captura(poke_selvagem, 'False', 'True', pokeball['nome_item'])
-
-            for c in range(1, 6):
-                print(c, end='-> ', flush=True)
-                sleep(0.5)
-            print()
-            print('-=' * 20)
-            print(f'\033[1;31m Que pena :-(, {poke_selvagem["nome"]} escapou!\033[m'.center(50))
-            print('-=' * 20)
-
-    else:
-        print("Voce nao tem pokebolas suficiente!")
+            print("Voce nao tem pokebolas suficiente!")
 
 
 def pokedex():
@@ -426,14 +448,13 @@ def ganhar_xp(xp_recebida, type_pokemon):
 
     xp += xp_recebida
 
-    if type_pokemon == 'normal':
-        xp *= 1
-
-    elif type_pokemon == 'shiny':
-        xp *= 2
-
-    elif type_pokemon == 'lendario':
-        xp *= 3
+    match type_pokemon:
+        case 'normal':
+            xp *= 1
+        case 'shiny':
+            xp *= 2
+        case 'lendario':
+            xp *= 3
 
     player['xp_atual']['info'] += xp
 
@@ -468,16 +489,17 @@ def ganhar_xp(xp_recebida, type_pokemon):
 def loot_poke_credito(type_pokemon):
     loot = randint(35, 80)
 
-    if type_pokemon == 'cap_normal':
-        loot *= 1
-    elif type_pokemon == 'evo_normal':
-        loot *= 2
-    elif type_pokemon == 'cap_shiny':
-        loot *= 2
-    elif type_pokemon == 'evo_shiny':
-        loot *= 3
-    elif type_pokemon == 'cap_lendario':
-        loot *= 4
+    match type_pokemon:
+        case 'cap_normal':
+            loot *= 1
+        case 'evo_normal':
+            loot *= 2
+        case 'cap_shiny':
+            loot *= 2
+        case 'evo_shiny':
+            loot *= 3
+        case 'cap-lendario':
+            loot *= 4
 
     inventario['poke_creditos']['qtde'] += loot
 
@@ -494,26 +516,27 @@ while True:
     print('-=' * 15)
     opcao = leiaInt('Qual sua opção? ')
 
-    if opcao == 1:
-        encontrar_pokemon()
-    # elif opcao == 2:
-    #     evolucao()
-    elif opcao == 2:
-        pokedex()
-    elif opcao == 3:
-        pokemart()
-    # elif opcao == 5:
-    #     mudar_rota()
-    elif opcao == 4:
-        reiniciar_jogo()
-        print('O jogo será fechado...')
-        input('Pressione ENTER para fechar...')
-        break
-    elif opcao == 5:
-        fim_jogo = leiaInt('Confirma? [ 1 ] Sim [ 2 ] Nao: ')
-        if fim_jogo == 1:
-            salvar_dados()
-            conexao.close()
+    match opcao:
+        case 1:
+            encontrar_pokemon()
+        # elif opcao == 2:
+        #     evolucao()
+        case 2:
+            pokedex()
+        case 3:
+            pokemart()
+        # elif opcao == 5:
+        #     mudar_rota()
+        case 4:
+            reiniciar_jogo()
+            print('O jogo será fechado...')
+            input('Pressione ENTER para fechar...')
             break
+        case 5:
+            fim_jogo = leiaInt('Confirma? [ 1 ] Sim [ 2 ] Nao: ')
+            if fim_jogo == 1:
+                salvar_dados()
+                conexao.close()
+                break
 
     salvar_dados()

@@ -14,3 +14,4 @@
 * separei os tipos de pokemon em duas colunas
 * pokemart criado
 * criado uma nova coluna no registro de captura pra saber qual pokebola foi usada
+* possibilidade de tentar capturar pokemon novamente caso ele escape
