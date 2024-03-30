@@ -17,6 +17,20 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS pokemon
 pokemon = {}
 inventario = {}
 player = {}
+rotas = {
+    'rota_1': [], 'rota_2': [], 'rota_3': [], 'rota_4': [], 'rota_5': [],
+    'rota_6': [], 'rota_7': [], 'rota_8': [], 'rota_9': [], 'rota_10': [],
+    'rota_11': [], 'rota_12': [], 'rota_13': [], 'rota_14': [], 'rota_15': []
+}
+level_dict = {
+    '1': 400, '2': 440, '3': 484, '4': 532, '5': 585, '6': 644, '7': 708, '8': 779, '9': 857, '10': 943,
+    '11': 1037, '12': 1141, '13': 1255, '14': 1380, '15': 1518, '16': 1670, '17': 1837, '18': 2021, '19': 2223,
+    '20': 2446, '21': 2690, '22': 2960, '23': 3256, '24': 3581, '25': 3993, '26': 4392, '27': 4831, '28': 5314,
+    '29': 5846, '30': 6430, '31': 7073, '32': 7780, '33': 8558, '34': 9414, '35': 10355, '36': 11390, '37': 12529,
+    '38': 13782, '39': 15161, '40': 16677, '41': 18344, '42': 20179, '43': 22197, '44': 24416, '45': 26858,
+    '46': 29544, '47': 32498, '48': 35748, '49': 39323, '50': 43256
+}
+
 
 # recuperando informações do banco de dados da tabela pokemon
 cursor = conexao.execute('SELECT * FROM pokemon')
@@ -86,11 +100,6 @@ pokemons = [
     pokemon['poke-151']
 ]
 
-rotas = {
-    'rota_1': [], 'rota_2': [], 'rota_3': [], 'rota_4': [], 'rota_5': [],
-    'rota_6': [], 'rota_7': [], 'rota_8': [], 'rota_9': [], 'rota_10': [],
-    'rota_11': [], 'rota_12': [], 'rota_13': [], 'rota_14': [], 'rota_15': []
-}
 
 index = 1
 while len(pokemons) != 0:
@@ -103,39 +112,6 @@ while len(pokemons) != 0:
 
 rota_atual = rotas['rota_1']
 mapa_atual = 'Rota 1'
-
-# lista com a evolucao dos pokemon capturados a partir da lista pokes
-evolucoes = [
-    pokemon['poke-002'], pokemon['poke-003'], pokemon['poke-005'], pokemon['poke-006'], pokemon['poke-008'],
-    pokemon['poke-009'], pokemon['poke-001'], pokemon['poke-011'], pokemon['poke-012'], pokemon['poke-014'],
-    pokemon['poke-015'], pokemon['poke-017'], pokemon['poke-018'], pokemon['poke-020'], pokemon['poke-022'],
-    pokemon['poke-024'], pokemon['poke-026'], pokemon['poke-028'], pokemon['poke-030'], pokemon['poke-031'],
-    pokemon['poke-033'], pokemon['poke-034'], pokemon['poke-036'], pokemon['poke-038'], pokemon['poke-040'],
-    pokemon['poke-042'], pokemon['poke-044'], pokemon['poke-045'], pokemon['poke-047'], pokemon['poke-049'],
-    pokemon['poke-051'], pokemon['poke-053'], pokemon['poke-055'], pokemon['poke-057'], pokemon['poke-059'],
-    pokemon['poke-061'], pokemon['poke-062'], pokemon['poke-064'], pokemon['poke-065'], pokemon['poke-067'],
-    pokemon['poke-068'], pokemon['poke-070'], pokemon['poke-071'], pokemon['poke-073'], pokemon['poke-075'],
-    pokemon['poke-076'], pokemon['poke-078'], pokemon['poke-080'], pokemon['poke-082'], pokemon['poke-085'],
-    pokemon['poke-087'], pokemon['poke-089'], pokemon['poke-091'], pokemon['poke-093'], pokemon['poke-094'],
-    pokemon['poke-097'], pokemon['poke-099'], pokemon['poke-101'], pokemon['poke-103'], pokemon['poke-110'],
-    pokemon['poke-112'], pokemon['poke-117'], pokemon['poke-119'], pokemon['poke-121'], pokemon['poke-130'],
-    pokemon['poke-134'], pokemon['poke-025'], pokemon['poke-136'], pokemon['poke-135'], pokemon['poke-139'],
-    pokemon['poke-141'], pokemon['poke-148'], pokemon['poke-149']
-]
-
-# lista dos pokemon lendario que sao adicionados a lista pokes apos atender uma condição
-lendarios = [
-    pokemon['poke-144'], pokemon['poke-145'], pokemon['poke-146'], pokemon['poke-150'], pokemon['poke-151']
-]
-
-level_dict = {
-    '1': 400, '2': 440, '3': 484, '4': 532, '5': 585, '6': 644, '7': 708, '8': 779, '9': 857, '10': 943,
-    '11': 1037, '12': 1141, '13': 1255, '14': 1380, '15': 1518, '16': 1670, '17': 1837, '18': 2021, '19': 2223,
-    '20': 2446, '21': 2690, '22': 2960, '23': 3256, '24': 3581, '25': 3993, '26': 4392, '27': 4831, '28': 5314,
-    '29': 5846, '30': 6430, '31': 7073, '32': 7780, '33': 8558, '34': 9414, '35': 10355, '36': 11390, '37': 12529,
-    '38': 13782, '39': 15161, '40': 16677, '41': 18344, '42': 20179, '43': 22197, '44': 24416, '45': 26858,
-    '46': 29544, '47': 32498, '48': 35748, '49': 39323, '50': 43256
-}
 
 
 # função pra validar as opções do usuário, nao deixando ele digitar nada diferente de um numero inteiro
@@ -163,18 +139,12 @@ def salvar_dados():
                        f"WHERE nome = '{p['nome']}'")
         conexao.commit()
 
+    for j in inventario.values():
+        cursor.execute(f"UPDATE inventario SET quantidade = {j['qtde']} WHERE item = '{j['nome_item'].lower()}'")
+
     cursor.execute(f"UPDATE jogador SET quantidade = {player['turno']['info']} WHERE item = 'turno'")
     cursor.execute(f"UPDATE jogador SET quantidade = {player['nivel_atual']['info']} WHERE item = 'nivel_atual'")
     cursor.execute(f"UPDATE jogador SET quantidade = {player['xp_atual']['info']} WHERE item = 'xp_atual'")
-
-    cursor.execute(f"UPDATE inventario SET quantidade = {inventario['pokeball']['qtde']} WHERE item = 'pokeball'")
-    cursor.execute(f"UPDATE inventario SET quantidade = {inventario['greatball']['qtde']} WHERE item = 'greatball'")
-    cursor.execute(f"UPDATE inventario SET quantidade = {inventario['ultraball']['qtde']} WHERE item = 'ultraball'")
-    cursor.execute(f"UPDATE inventario SET quantidade = {inventario['masterball']['qtde']} WHERE item = 'masterball'")
-    cursor.execute(f"UPDATE inventario SET quantidade = {inventario['pokeball fire']['qtde']} WHERE item = 'pokeball fire'")
-    cursor.execute(f"UPDATE inventario SET quantidade = {inventario['pokeball water']['qtde']} WHERE item = 'pokeball water'")
-    cursor.execute(f"UPDATE inventario SET quantidade = {inventario['pokeball grass']['qtde']} WHERE item = 'pokeball grass'")
-    cursor.execute(f"UPDATE inventario SET quantidade = {inventario['poke_creditos']['qtde']} WHERE item = 'poke_creditos'")
 
 
 # reinicia o jogo com os valores padrao de cada coluna
@@ -182,14 +152,8 @@ def reiniciar_jogo():
     cursor.execute(f"UPDATE pokemon SET copy = {0}, apareceu = {0}, total_copy = {0}, "
                    f"shiny_apareceu = {0}, copy_shiny = {0}, total_shinycopy = {0}")
 
+    cursor.execute(f"UPDATE inventario SET quantidade = {0}")
     cursor.execute(f"UPDATE inventario SET quantidade = {10} WHERE item = 'pokeball'")
-    cursor.execute(f"UPDATE inventario SET quantidade = {0} WHERE item = 'greatball'")
-    cursor.execute(f"UPDATE inventario SET quantidade = {0} WHERE item = 'ultraball'")
-    cursor.execute(f"UPDATE inventario SET quantidade = {0} WHERE item = 'masterball'")
-    cursor.execute(f"UPDATE inventario SET quantidade = {0} WHERE item = 'poke_creditos'")
-    cursor.execute(f"UPDATE inventario SET quantidade = {0} WHERE item = 'pokeball fire'")
-    cursor.execute(f"UPDATE inventario SET quantidade = {0} WHERE item = 'pokeball water'")
-    cursor.execute(f"UPDATE inventario SET quantidade = {0} WHERE item = 'pokeball grass'")
 
     cursor.execute(f"UPDATE jogador SET quantidade = {0} WHERE item = 'turno'")
     cursor.execute(f"UPDATE jogador SET quantidade = {1} WHERE item = 'nivel_atual'")
@@ -271,12 +235,22 @@ def encontrar_pokemon():
 
         opcao = leiaInt('Deseja capturá-lo? [ 1 ] Sim [ 2 ] Nao: ')
         if opcao == 1:
-            print(f'\033[1;31m[ 1 ] Poké Ball: {inventario["pokeball"]["qtde"]:>4}   '
-                  f'[ 2 ] Great Ball: {inventario["greatball"]["qtde"]:>1}\n'
-                  f'[ 3 ] Ultra Ball: {inventario["ultraball"]["qtde"]:>3}   '
-                  f'[ 4 ] Fire Ball: {inventario["pokeball fire"]["qtde"]:>2}\n'
-                  f'[ 5 ] Water Ball: {inventario["pokeball water"]["qtde"]:>3}   '
-                  f'[ 6 ] Grass Ball: {inventario["pokeball grass"]["qtde"]:>1}\033[m')
+            print(f'\033[1;31m[ 1 ] Poké Ball:\033[m\033[1;32m {inventario["pokeball"]["qtde"]:>5}\033[m   '
+                  f'\033[1;31m[ 2 ] Great Ball:\033[m\033[1;32m {inventario["greatball"]["qtde"]:>5}\033[m\n'
+                  f'\033[1;31m[ 3 ] Ultra Ball:\033[m\033[1;32m {inventario["ultraball"]["qtde"]:>4}\033[m   '
+                  f'\033[1;31m[ 4 ] Fire Ball:\033[m\033[1;32m {inventario["pokeball fire"]["qtde"]:>6}\033[m\n'
+                  f'\033[1;31m[ 5 ] Water Ball:\033[m\033[1;32m {inventario["pokeball water"]["qtde"]:>4}\033[m   '
+                  f'\033[1;31m[ 6 ] Grass Ball:\033[m\033[1;32m {inventario["pokeball grass"]["qtde"]:>5}\033[m\n'
+                  f'\033[1;31m[ 7 ] Bug Ball:\033[m\033[1;32m {inventario["pokeball bug"]["qtde"]:>6}\033[m   '
+                  f'\033[1;31m[ 8 ] Poison Ball:\033[m\033[1;32m {inventario["pokeball poison"]["qtde"]:>4}\033[m\n'
+                  f'\033[1;31m[ 9 ] Eletric Ball:\033[m\033[1;32m {inventario["pokeball eletric"]["qtde"]:>2}\033[m   '
+                  f'\033[1;31m[ 10 ] Ground Ball:\033[m\033[1;32m {inventario["pokeball ground"]["qtde"]:>3}\033[m\n'
+                  f'\033[1;31m[ 11 ] Fight Ball:\033[m\033[1;32m {inventario["pokeball fighting"]["qtde"]:>3}\033[m   '
+                  f'\033[1;31m[ 12 ] Psychic Ball:\033[m\033[1;32m {inventario["pokeball psychic"]["qtde"]:>2}\033[m\n'
+                  f'\033[1;31m[ 13 ] Rock Ball:\033[m\033[1;32m {inventario["pokeball rock"]["qtde"]:>4}\033[m   '
+                  f'\033[1;31m[ 14 ] Ghost Ball:\033[m\033[1;32m {inventario["pokeball ghost"]["qtde"]:>4}\033[m\n'
+                  f'\033[1;31m[ 15 ] Ice Ball:\033[m\033[1;32m {inventario["pokeball ice"]["qtde"]:>5}\033[m   '
+                  f'\033[1;31m[ 16 ] Dragon Ball:\033[m\033[1;32m {inventario["pokeball dragon"]["qtde"]:>3}\033[m')
             usar_pokebola = leiaInt('Qual Pokébola usar? ')
             match usar_pokebola:
                 case 1:
@@ -291,6 +265,26 @@ def encontrar_pokemon():
                     pokeball = inventario["pokeball water"]
                 case 6:
                     pokeball = inventario["pokeball grass"]
+                case 7:
+                    pokeball = inventario["pokeball bug"]
+                case 8:
+                    pokeball = inventario["pokeball poison"]
+                case 9:
+                    pokeball = inventario["pokeball eletric"]
+                case 10:
+                    pokeball = inventario["pokeball ground"]
+                case 11:
+                    pokeball = inventario["pokeball fighting"]
+                case 12:
+                    pokeball = inventario["pokeball psychic"]
+                case 13:
+                    pokeball = inventario["pokeball rock"]
+                case 14:
+                    pokeball = inventario["pokeball ghost"]
+                case 15:
+                    pokeball = inventario["pokeball ice"]
+                case 16:
+                    pokeball = inventario["pokeball dragon"]
 
             captura(shiny, poke_selvagem, pokeball)
 
@@ -308,11 +302,12 @@ def captura(is_shiny, poke_selvagem, pokeball):
             chance_captura = ((poke_selvagem['catch_rate'] / 255) * pokeball['rate_captura']) * bonus_rate
         else:
             chance_captura = ((poke_selvagem['catch_rate'] / 255) * pokeball['rate_captura'])
-        # print('-=' * 20)
-        # print(f'Random Number: {random_number:.2f}')
-        # print(f"Chance Captura: {chance_captura:.2f}")
-        # print('-=' * 20)
+        print('-=' * 20)
+        print(f'Random Number: {random_number:.2f}')
+        print(f"Chance Captura: {chance_captura:.2f}")
+        print('-=' * 20)
         if pokeball["qtde"] > 0:
+            pokeball['qtde'] -= 1
             print(f'Voce joga a {pokeball["nome_item"]}!!!')
 
             if random_number <= chance_captura or random_number >= 1:
@@ -359,30 +354,59 @@ def captura(is_shiny, poke_selvagem, pokeball):
                 print(f'\033[1;31m Que pena :-(, {poke_selvagem["nome"]} escapou!\033[m'.center(50))
                 print('-=' * 20)
 
-            pokeball['qtde'] -= 1
-
             retry = leiaInt('Tentar a captura novamente? [ 1 ] Sim [ 2 ] Nao: ')
             if retry == 1:
-                print(f'\033[1;31m[ 1 ] Poké Ball: {inventario["pokeball"]["qtde"]:>4}   '
-                      f'[ 2 ] Great Ball: {inventario["greatball"]["qtde"]:>1}\n'
-                      f'[ 3 ] Ultra Ball: {inventario["ultraball"]["qtde"]:>3}   '
-                      f'[ 4 ] Fire Ball: {inventario["pokeball fire"]["qtde"]:>2}\n'
-                      f'[ 5 ] Water Ball: {inventario["pokeball water"]["qtde"]:>3}   '
-                      f'[ 6 ] Grass Ball: {inventario["pokeball grass"]["qtde"]:>1}\033[m')
+                print(f'\033[1;31m[ 1 ] Poké Ball:\033[m\033[1;32m {inventario["pokeball"]["qtde"]:>5}\033[m   '
+                      f'\033[1;31m[ 2 ] Great Ball:\033[m\033[1;32m {inventario["greatball"]["qtde"]:>5}\033[m\n'
+                      f'\033[1;31m[ 3 ] Ultra Ball:\033[m\033[1;32m {inventario["ultraball"]["qtde"]:>4}\033[m   '
+                      f'\033[1;31m[ 4 ] Fire Ball:\033[m\033[1;32m {inventario["pokeball fire"]["qtde"]:>6}\033[m\n'
+                      f'\033[1;31m[ 5 ] Water Ball:\033[m\033[1;32m {inventario["pokeball water"]["qtde"]:>4}\033[m   '
+                      f'\033[1;31m[ 6 ] Grass Ball:\033[m\033[1;32m {inventario["pokeball grass"]["qtde"]:>5}\033[m\n'
+                      f'\033[1;31m[ 7 ] Bug Ball:\033[m\033[1;32m {inventario["pokeball bug"]["qtde"]:>6}\033[m   '
+                      f'\033[1;31m[ 8 ] Poison Ball:\033[m\033[1;32m {inventario["pokeball poison"]["qtde"]:>4}\033[m\n'
+                      f'\033[1;31m[ 9 ] Eletric Ball:\033[m\033[1;32m {inventario["pokeball eletric"]["qtde"]:>2}\033[m   '
+                      f'\033[1;31m[ 10 ] Ground Ball:\033[m\033[1;32m {inventario["pokeball ground"]["qtde"]:>3}\033[m\n'
+                      f'\033[1;31m[ 11 ] Fight Ball:\033[m\033[1;32m {inventario["pokeball fighting"]["qtde"]:>3}\033[m   '
+                      f'\033[1;31m[ 12 ] Psychic Ball:\033[m\033[1;32m {inventario["pokeball psychic"]["qtde"]:>2}\033[m\n'
+                      f'\033[1;31m[ 13 ] Rock Ball:\033[m\033[1;32m {inventario["pokeball rock"]["qtde"]:>4}\033[m   '
+                      f'\033[1;31m[ 14 ] Ghost Ball:\033[m\033[1;32m {inventario["pokeball ghost"]["qtde"]:>4}\033[m\n'
+                      f'\033[1;31m[ 15 ] Ice Ball:\033[m\033[1;32m {inventario["pokeball ice"]["qtde"]:>5}\033[m   '
+                      f'\033[1;31m[ 16 ] Dragon Ball:\033[m\033[1;32m {inventario["pokeball dragon"]["qtde"]:>3}\033[m')
                 opcao = leiaInt('Escolha a Pokebola: ')
                 match opcao:
                     case 1:
-                        pokeball = inventario['pokeball']
+                        pokeball = inventario["pokeball"]
                     case 2:
-                        pokeball = inventario['greatball']
+                        pokeball = inventario["greatball"]
                     case 3:
-                        pokeball = inventario['ultraball']
+                        pokeball = inventario["ultraball"]
                     case 4:
-                        pokeball = inventario['pokeball fire']
+                        pokeball = inventario["pokeball fire"]
                     case 5:
-                        pokeball = inventario['pokeball water']
+                        pokeball = inventario["pokeball water"]
                     case 6:
-                        pokeball = inventario['pokeball grass']
+                        pokeball = inventario["pokeball grass"]
+                    case 7:
+                        pokeball = inventario["pokeball bug"]
+                    case 8:
+                        pokeball = inventario["pokeball poison"]
+                    case 9:
+                        pokeball = inventario["pokeball eletric"]
+                    case 10:
+                        pokeball = inventario["pokeball ground"]
+                    case 11:
+                        pokeball = inventario["pokeball fighting"]
+                    case 12:
+                        pokeball = inventario["pokeball psychic"]
+                    case 13:
+                        pokeball = inventario["pokeball rock"]
+                    case 14:
+                        pokeball = inventario["pokeball ghost"]
+                    case 15:
+                        pokeball = inventario["pokeball ice"]
+                    case 16:
+                        pokeball = inventario["pokeball dragon"]
+
             elif retry == 2:
                 break
 
