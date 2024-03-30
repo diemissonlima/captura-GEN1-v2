@@ -2,17 +2,42 @@
 {'turno': {'info': 0}, 'nivel_atual': {'info': 1}, 'xp_atual': {'info': 400}}
 
                                 INVENTARIO
-{'pokeball': {'id': 1, 'nome_item': 'Pokeball', 'tipo_item': 'normal', 'qtde': 42, 'rate_captura': 1.0,
-'rate_bonus': 1.0, 'preco_compra': 50.0, 'preco_venda': 25.0}, 'greatball': {'id': 2, 'nome_item': 'Greatball',
-'tipo_item': 'normal', 'qtde': 4, 'rate_captura': 1.5, 'rate_bonus': 1.5, 'preco_compra': 100.0,
-'preco_venda': 50.0}, 'ultraball': {'id': 3, 'nome_item': 'Ultraball', 'tipo_item': 'normal', 'qtde': 7,
-'rate_captura': 2.0, 'rate_bonus': 2.0, 'preco_compra': 150.0, 'preco_venda': 75.0},
-'masterball': {'id': 4, 'nome_item': 'Masterball', 'tipo_item': 'normal', 'qtde': 0, 'rate_captura': 100.0,
-'rate_bonus': 100.0, 'preco_compra': 500.0, 'preco_venda': 250.0},
-'poke_creditos': {'id': 5, 'nome_item': 'Poke_creditos', 'tipo_item': 'dinheiro', 'qtde': 1318, 'rate_captura': 0.0,
-'rate_bonus': 0.0, 'preco_compra': 0.0, 'preco_venda': 0.0}, 'pokeball_fire': {'id': 6, 'nome_item': 'Pokeball_fire',
-'tipo_item': 'fire', 'qtde': 1, 'rate_captura': 1.0, 'rate_bonus': 2.5, 'preco_compra': 200.0, 'preco_venda': 100.0}}
-
+{'id': 1, 'nome_item': 'Pokeball', 'tipo_item': 'Normal', 'qtde': 50, 'rate_captura': 1.0, 'rate_bonus': 1.0,
+'drop_rate': 1, 'drop_rate_2': 50, 'preco_compra': 50, 'preco_venda': 25}
+{'id': 2, 'nome_item': 'Greatball', 'tipo_item': 'Normal', 'qtde': 2, 'rate_captura': 1.5, 'rate_bonus': 1.0,
+'drop_rate': 51, 'drop_rate_2': 76, 'preco_compra': 100, 'preco_venda': 50}
+{'id': 3, 'nome_item': 'Ultraball', 'tipo_item': 'Normal', 'qtde': 11, 'rate_captura': 2.0, 'rate_bonus': 1.0,
+'drop_rate': 77, 'drop_rate_2': 102, 'preco_compra': 150, 'preco_venda': 75}
+{'id': 4, 'nome_item': 'Masterball', 'tipo_item': 'Normal', 'qtde': 1, 'rate_captura': 100.0, 'rate_bonus': 100.0,
+'drop_rate': 0, 'drop_rate_2': 0, 'preco_compra': 1000, 'preco_venda': 500}
+{'id': 5, 'nome_item': 'Poke_Creditos', 'tipo_item': 'Dinheiro', 'qtde': 3800, 'rate_captura': 0.0, 'rate_bonus': 0.0,
+'drop_rate': 0, 'drop_rate_2': 0, 'preco_compra': 0, 'preco_venda': 0}
+{'id': 6, 'nome_item': 'Pokeball Fire', 'tipo_item': 'Fire', 'qtde': 1, 'rate_captura': 1.0, 'rate_bonus': 3.5,
+'drop_rate': 103, 'drop_rate_2': 108, 'preco_compra': 400, 'preco_venda': 200}
+{'id': 7, 'nome_item': 'Pokeball Water', 'tipo_item': 'Water', 'qtde': 1, 'rate_captura': 1.0, 'rate_bonus': 3.5,
+'drop_rate': 109, 'drop_rate_2': 114, 'preco_compra': 400, 'preco_venda': 200}
+{'id': 8, 'nome_item': 'Pokeball Grass', 'tipo_item': 'Grass', 'qtde': 1, 'rate_captura': 1.0, 'rate_bonus': 3.5,
+'drop_rate': 115, 'drop_rate_2': 120, 'preco_compra': 400, 'preco_venda': 200}
+{'id': 9, 'nome_item': 'Pokeball Bug', 'tipo_item': 'Bug', 'qtde': 1, 'rate_captura': 1.0, 'rate_bonus': 3.5,
+'drop_rate': 121, 'drop_rate_2': 126, 'preco_compra': 400, 'preco_venda': 200}
+{'id': 10, 'nome_item': 'Pokeball Poison', 'tipo_item': 'Poison', 'qtde': 1, 'rate_captura': 1.0, 'rate_bonus': 3.5,
+'drop_rate': 127, 'drop_rate_2': 132, 'preco_compra': 400, 'preco_venda': 200}
+{'id': 11, 'nome_item': 'Pokeball Eletric', 'tipo_item': 'Eletric', 'qtde': 1, 'rate_captura': 1.0, 'rate_bonus': 3.5,
+'drop_rate': 133, 'drop_rate_2': 138, 'preco_compra': 400, 'preco_venda': 200}
+{'id': 12, 'nome_item': 'Pokeball Ground', 'tipo_item': 'Ground', 'qtde': 1, 'rate_captura': 1.0, 'rate_bonus': 3.5,
+'drop_rate': 139, 'drop_rate_2': 144, 'preco_compra': 400, 'preco_venda': 200}
+{'id': 13, 'nome_item': 'Pokeball Fighting', 'tipo_item': 'Fighting', 'qtde': 1, 'rate_captura': 1.0, 'rate_bonus': 3.5,
+'drop_rate': 145, 'drop_rate_2': 150, 'preco_compra': 400, 'preco_venda': 200}
+{'id': 14, 'nome_item': 'Pokeball Psychic', 'tipo_item': 'Psychic', 'qtde': 1, 'rate_captura': 1.0, 'rate_bonus': 3.5,
+'drop_rate': 151, 'drop_rate_2': 156, 'preco_compra': 400, 'preco_venda': 200}
+{'id': 15, 'nome_item': 'Pokeball Rock', 'tipo_item': 'Rock', 'qtde': 1, 'rate_captura': 1.0, 'rate_bonus': 3.5,
+'drop_rate': 157, 'drop_rate_2': 162, 'preco_compra': 400, 'preco_venda': 200}
+{'id': 16, 'nome_item': 'Pokeball Ghost', 'tipo_item': 'Ghost', 'qtde': 1, 'rate_captura': 1.0, 'rate_bonus': 3.5,
+'drop_rate': 163, 'drop_rate_2': 168, 'preco_compra': 400, 'preco_venda': 200}
+{'id': 17, 'nome_item': 'Pokeball Ice', 'tipo_item': 'Ice', 'qtde': 1, 'rate_captura': 1.0, 'rate_bonus': 3.5,
+'drop_rate': 169, 'drop_rate_2': 174, 'preco_compra': 400, 'preco_venda': 200}
+{'id': 18, 'nome_item': 'Pokeball Dragon', 'tipo_item': 'Dragon', 'qtde': 1, 'rate_captura': 1.0, 'rate_bonus': 3.5,
+'drop_rate': 175, 'drop_rate_2': 180, 'preco_compra': 400, 'preco_venda': 200}
 
                                 POKEMON
 {'id': 'poke-041', 'nome': 'Zubat', 'tipo_1': 'Poison', 'tipo_2': 'Flying', 'evo': 'Golbat',
@@ -29,4 +54,3 @@
 \033[1;31m  \033[m - vermelho
 \033[1;32m  \033[m - verde
 \033[1;33m  \033[m - amarelo
-

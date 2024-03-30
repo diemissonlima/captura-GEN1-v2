@@ -10,10 +10,6 @@ conexao = sqlite3.connect('pokemon.db')
 # cursor pra fazer operações no banco de dados
 cursor = conexao.cursor()
 
-# cria a tabela pokemon no banco de dados caso nao exista
-cursor.execute('''CREATE TABLE IF NOT EXISTS pokemon
-                             (nome TEXT, id INTEGER, copy INTEGER, total_copy INTEGER, evo TEXT, apareceu INTEGER)''')
-
 pokemon = {}
 inventario = {}
 player = {}
