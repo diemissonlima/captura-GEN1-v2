@@ -1,10 +1,3 @@
---- Atualizacoes para fazer ---
-* drop de itens
-* evolucao reformulada
-* captura de lendarios por masterball
-* alterar a rota atual
-
---- Ja Implementados ---
 * rotas
 * sistema de level up
 * sistema de reiniciar jogo
@@ -16,8 +9,12 @@
 * criado uma nova coluna no registro de captura pra saber qual pokebola foi usada
 * possibilidade de tentar capturar pokemon novamente caso ele escape
 * refeito o calculo de captura de pokemon considerando os tipos de pokebolas especiais
-
 * adicionado todas as pokeballs especiais
 * mudei os poke_creditos da tabela inventario para jogador
-* sistema de loot de itens (pokebolas por enquanto)
+* sistema de drop de itens (pokebolas por enquanto)
 * retirado as pokebolas especiais do pokemart, disponiveis apenas por drop
+
+* adicionado possibilidade de vender itens no market, antes so podia comprar
+* retirado a possibilidade de tentar capturar novamente o pokemon caso escape da primeira vez
+* mudanca de rota implementado, podendo escolher entre as rotas 1 a 15
+* refeito o calculo de drop de poke creditos
