@@ -1,5 +1,5 @@
                                 PLAYER
-{'turno': {'info': 0}, 'nivel_atual': {'info': 1}, 'xp_atual': {'info': 400}}
+{'turno': {'info': 221}, 'nivel_atual': {'info': 20}, 'xp_atual': {'info': 1844}, 'poke_creditos': {'info': 5758}}
 
                                 INVENTARIO
 {'id': 1, 'nome_item': 'Pokeball', 'tipo_item': 'Normal', 'qtde': 50, 'rate_captura': 1.0, 'rate_bonus': 1.0,
