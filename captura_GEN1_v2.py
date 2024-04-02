@@ -204,6 +204,7 @@ def encontrar_pokemon():
         input(f'{player["turno"]["info"]}º Turno - Pressione ENTER para começar!')
         print('Um Pokémon selvagem apareceu!')
         sleep(3)
+
         poke_selvagem = choice(rota_atual)
 
         if poke_selvagem['lendario'] == 'True':
@@ -425,8 +426,6 @@ def ganhar_xp(xp_recebida, type_pokemon):
             xp *= 1
         case 'shiny':
             xp *= 2
-        case 'lendario':
-            xp *= 3
 
     player['xp_atual']['info'] += xp
 
@@ -466,7 +465,7 @@ def loot_poke_credito(type_pokemon):
             loot *= 1
         case 'normal_shiny':
             loot *= 2
-        case 'lendario':
+        case 'lendario_normal':
             loot *= 3
         case 'lendario_shiny':
             loot *= 4

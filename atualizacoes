@@ -13,7 +13,6 @@
 * mudei os poke_creditos da tabela inventario para jogador
 * sistema de drop de itens (pokebolas por enquanto)
 * retirado as pokebolas especiais do pokemart, disponiveis apenas por drop
-
 * adicionado possibilidade de vender itens no market, antes so podia comprar
 * retirado a possibilidade de tentar capturar novamente o pokemon caso escape da primeira vez
 * mudanca de rota implementado, podendo escolher entre as rotas 1 a 15
