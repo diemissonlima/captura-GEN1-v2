@@ -17,3 +17,10 @@
 * retirado a possibilidade de tentar capturar novamente o pokemon caso escape da primeira vez
 * mudanca de rota implementado, podendo escolher entre as rotas 1 a 15
 * refeito o calculo de drop de poke creditos
+
+* adicionado a 2ª gen de pokemon
+* 3 novos tipos de pokes adicionados (fairy, dark, steel)
+* 3 novas pokebolas para os 3 tipos novos adicionados
+* estatistica peso do pokemon adicionado
+* novos itens adicionados para serem vendidos no market
+* reformulado o drop de itens

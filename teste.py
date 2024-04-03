@@ -5,7 +5,7 @@ from datetime import datetime as dt
 import sqlite3
 
 # Conectar ao banco de dados (cria o banco de dados se ele não existir)
-conexao = sqlite3.connect('pokemon.db')
+conexao = sqlite3.connect('pokemon testes.db')
 
 # cursor pra fazer operações no banco de dados
 cursor = conexao.cursor()
@@ -32,23 +32,23 @@ cursor = conexao.execute('SELECT * FROM pokemon')
 resultados = cursor.fetchall()
 for j in resultados:
     num, dex, nome, tipo_1, tipo_2, evo, lendario, apareceu, copy, total_copy, shiny_apareceu, copy_shiny, \
-        total_shinycopy, exp_base, catch_rate = j
+        total_shinycopy, exp_base, catch_rate, peso = j
     pokemon[dex] = {
         'id': dex, 'nome': nome, 'tipo_1': tipo_1, 'tipo_2': tipo_2, 'evo': evo, 'lendario': lendario,
         'apareceu': apareceu, 'copy': copy, 'total_copy': total_copy, 'shiny_apareceu': shiny_apareceu,
-        'copy_shiny': copy_shiny, 'total_shinycopy': total_shinycopy, 'exp_base': exp_base, 'catch_rate': catch_rate
+        'copy_shiny': copy_shiny, 'total_shinycopy': total_shinycopy, 'exp_base': exp_base, 'catch_rate': catch_rate,
+        'peso': peso
     }
 
 # recuperando informações do banco de dados da tabela inventario
 cursor = conexao.execute('SELECT * FROM inventario')
 item_inventario = cursor.fetchall()
 for itens in item_inventario:
-    id_item, nome_item, tipo_item, qtde, rate_captura, rate_bonus, drop_rate_1, drop_rate_2, \
-        preco_compra, preco_venda = itens
+    id_item, nome_item, tipo_item, qtde, rate_captura, rate_bonus, preco_compra, preco_venda = itens
     inventario[nome_item] = {
         'id': id_item, 'nome_item': nome_item.title(), 'tipo_item': tipo_item, 'qtde': qtde,
-        'rate_captura': rate_captura, 'rate_bonus': rate_bonus, 'drop_rate_1': drop_rate_1,
-        'drop_rate_2': drop_rate_2, 'preco_compra': preco_compra, 'preco_venda': preco_venda
+        'rate_captura': rate_captura, 'rate_bonus': rate_bonus, 'preco_compra': preco_compra,
+        'preco_venda': preco_venda
     }
 
 # recuperando informações do banco de dados da tabela jogador
@@ -93,15 +93,41 @@ pokemons = [
     pokemon['poke-136'], pokemon['poke-137'], pokemon['poke-138'], pokemon['poke-139'], pokemon['poke-140'],
     pokemon['poke-141'], pokemon['poke-142'], pokemon['poke-143'], pokemon['poke-144'], pokemon['poke-145'],
     pokemon['poke-146'], pokemon['poke-147'], pokemon['poke-148'], pokemon['poke-149'], pokemon['poke-150'],
-    pokemon['poke-151']
+    pokemon['poke-151'], pokemon['poke-152'], pokemon['poke-153'], pokemon['poke-154'], pokemon['poke-155'],
+    pokemon['poke-156'], pokemon['poke-157'], pokemon['poke-158'], pokemon['poke-159'], pokemon['poke-160'],
+    pokemon['poke-161'], pokemon['poke-162'], pokemon['poke-163'], pokemon['poke-164'], pokemon['poke-165'],
+    pokemon['poke-166'], pokemon['poke-167'], pokemon['poke-168'], pokemon['poke-169'], pokemon['poke-170'],
+    pokemon['poke-171'], pokemon['poke-172'], pokemon['poke-173'], pokemon['poke-174'], pokemon['poke-175'],
+    pokemon['poke-176'], pokemon['poke-177'], pokemon['poke-178'], pokemon['poke-179'], pokemon['poke-180'],
+    pokemon['poke-181'], pokemon['poke-182'], pokemon['poke-183'], pokemon['poke-184'], pokemon['poke-185'],
+    pokemon['poke-186'], pokemon['poke-187'], pokemon['poke-188'], pokemon['poke-189'], pokemon['poke-190'],
+    pokemon['poke-191'], pokemon['poke-192'], pokemon['poke-193'], pokemon['poke-194'], pokemon['poke-195'],
+    pokemon['poke-196'], pokemon['poke-197'], pokemon['poke-198'], pokemon['poke-199'], pokemon['poke-200'],
+    pokemon['poke-201'], pokemon['poke-202'], pokemon['poke-203'], pokemon['poke-204'], pokemon['poke-205'],
+    pokemon['poke-206'], pokemon['poke-207'], pokemon['poke-208'], pokemon['poke-209'], pokemon['poke-210'],
+    pokemon['poke-211'], pokemon['poke-212'], pokemon['poke-213'], pokemon['poke-214'], pokemon['poke-215'],
+    pokemon['poke-216'], pokemon['poke-217'], pokemon['poke-218'], pokemon['poke-219'], pokemon['poke-220'],
+    pokemon['poke-221'], pokemon['poke-222'], pokemon['poke-223'], pokemon['poke-224'], pokemon['poke-225'],
+    pokemon['poke-226'], pokemon['poke-227'], pokemon['poke-228'], pokemon['poke-229'], pokemon['poke-230'],
+    pokemon['poke-231'], pokemon['poke-232'], pokemon['poke-233'], pokemon['poke-234'], pokemon['poke-235'],
+    pokemon['poke-236'], pokemon['poke-237'], pokemon['poke-238'], pokemon['poke-239'], pokemon['poke-240'],
+    pokemon['poke-241'], pokemon['poke-242'], pokemon['poke-243'], pokemon['poke-244'], pokemon['poke-245'],
+    pokemon['poke-246'], pokemon['poke-247'], pokemon['poke-248'], pokemon['poke-249'], pokemon['poke-250'],
+    pokemon['poke-251']
 ]
-pokeballs = [
+drop_list = [
     inventario['pokeball'], inventario['greatball'], inventario['ultraball'], inventario['masterball'],
-    inventario['pokeball fire'], inventario['pokeball water'], inventario['pokeball grass'], inventario['pokeball bug'],
-    inventario['pokeball poison'], inventario['pokeball eletric'], inventario['pokeball ground'],
-    inventario['pokeball fighting'], inventario['pokeball psychic'], inventario['pokeball rock'],
-    inventario['pokeball ghost'], inventario['pokeball ice'], inventario['pokeball dragon'],
-    inventario['pokeball flying']
+    inventario['pokeball fire'], inventario['pokeball water'], inventario['pokeball grass'],
+    inventario['pokeball bug'], inventario['pokeball poison'], inventario['pokeball eletric'],
+    inventario['pokeball ground'], inventario['pokeball fighting'], inventario['pokeball psychic'],
+    inventario['pokeball rock'], inventario['pokeball ghost'], inventario['pokeball ice'],
+    inventario['pokeball dragon'], inventario['pokeball flying'], inventario['pokeball fairy'],
+    inventario['pokeball dark'], inventario['pokeball steel'],
+    inventario['balm mushroom'], inventario['big nugget'], inventario['big pearl'], inventario['black flute'],
+    inventario['blue flute'], inventario['comet shard'], inventario['nugget'], inventario['pearl string'],
+    inventario['pretty feather'], inventario['rare bone'], inventario['red flute'], inventario['relic band'],
+    inventario['relic cooper'], inventario['relic crown'], inventario['relic gold'], inventario['relic silver'],
+    inventario['relic statue'], inventario['stardust'], inventario['yellow flute'], inventario['white flute'],
 ]
 rota = [
     rotas['rota_1'], rotas['rota_2'], rotas['rota_3'], rotas['rota_4'], rotas['rota_5'],
@@ -204,6 +230,7 @@ def encontrar_pokemon():
         input(f'{player["turno"]["info"]}º Turno - Pressione ENTER para começar!')
         print('Um Pokémon selvagem apareceu!')
         sleep(3)
+
         poke_selvagem = choice(rota_atual)
 
         if poke_selvagem['lendario'] == 'True':
@@ -242,20 +269,24 @@ def encontrar_pokemon():
                   f'>> Versão Normal apareceu: {poke_selvagem["apareceu"]}x <<\n'
                   f'>> Versão Shiny apareceu: {poke_selvagem["shiny_apareceu"]}x <<')
 
+        for item in inventario.values():
+            if item['qtde'] > 0:
+                if item['tipo_item'] == poke_selvagem['tipo_1'] or item['tipo_item'] == poke_selvagem['tipo_2']:
+                    print(f"\033[1;31m[ {item['id']} ] {item['nome_item']}:\033[m\033[1;32m {item['qtde']}\033[m")
+                else:
+                    if 1 <= item['id'] <= 4:
+                        print(f"\033[1;31m[ {item['id']} ] {item['nome_item']}:\033[m\033[1;32m {item['qtde']}\033[m")
+
         opcao = leiaInt('Deseja capturá-lo? [ 1 ] Sim [ 2 ] Nao: ')
         if opcao == 1:
-            for item in inventario.values():
-                if item['qtde'] > 0:
-                    print(f"\033[1;31m[ {item['id']} ] {item['nome_item']}:\033[m\033[1;32m {item['qtde']}\033[m")
-
             usar_pokebola = leiaInt('Qual Pokébola usar? ')
-            pokeball = pokeballs[usar_pokebola - 1]
+            pokeball = drop_list[usar_pokebola - 1]
 
             captura(shiny, poke_selvagem, pokeball)
 
-            opcao = leiaInt('Voltar ao Menu Principal? [ 1 ] Sim [ 2 ] Não: ')
-            if opcao == 1:
-                break
+        opcao = leiaInt('Voltar ao Menu Principal? [ 1 ] Sim [ 2 ] Não: ')
+        if opcao == 1:
+            break
 
 
 # função que executa a captura de um pokémon
@@ -359,7 +390,7 @@ def pokedex():
             print(f"\033[1;32m# {dex[5:]} {name} - {type_1}/{type_2}\033[m")
 
     print('-=' * 20)
-    print(f'\033[1;33m{qtde_capturados} / 151 Pokémon Capturados!\033[m'.center(50))
+    print(f'\033[1;33m{qtde_capturados} / {len(pokemon)} Pokémon Capturados!\033[m'.center(50))
 
 
 def pokemart():
@@ -374,7 +405,7 @@ def pokemart():
                   f'3 - {inventario["ultraball"]["nome_item"]} P$ {inventario["ultraball"]["preco_compra"]}\n'
                   f'4 - {inventario["masterball"]["nome_item"]} P$ {inventario["masterball"]["preco_compra"]}')
             compra = leiaInt("O que deseja comprar? ")
-            item_compra = pokeballs[compra - 1]
+            item_compra = drop_list[compra - 1]
 
             qtde_compra = leiaInt("Digite a quantidade: ")
             valor_compra = int(qtde_compra * item_compra['preco_compra'])
@@ -394,22 +425,27 @@ def pokemart():
 
         elif opcao == 2:
             print('Itens Disponíveis para venda:')
-            for item in inventario.values():
-                if item['qtde'] > 0:
-                    print(f"{item['id']} - {item['nome_item']}: {item['qtde']}")
+            for i in inventario.values():
+                if i['qtde'] > 0:
+                    print(f"{i['id']} - {i['nome_item']}: {i['qtde']}")
+
             venda = leiaInt('Qual item deseja vender? ')
-            item_venda = pokeballs[venda - 1]
+            item_venda = drop_list[venda - 1]
 
             qtde_venda = leiaInt('Digite a quantidade: ')
-            valor_venda = int(qtde_venda * item_venda['preco_venda'])
+            if item_venda['qtde'] > 0:
+                valor_venda = int(qtde_venda * item_venda['preco_venda'])
 
-            player['poke_creditos']['info'] += valor_venda
-            item_venda['qtde'] -= qtde_venda
+                player['poke_creditos']['info'] += valor_venda
+                item_venda['qtde'] -= qtde_venda
 
-            print('-=' * 20)
-            print(f'\033[1;32mFoi vendido {qtde_venda} {item_venda["nome_item"]}\nTotal Venda: P$ {valor_venda}\n'
-                  f'Poké Créditos: P$ {player["poke_creditos"]["info"]}\033[m')
-            print('-=' * 20)
+                print('-=' * 20)
+                print(
+                    f'\033[1;32mFoi vendido {qtde_venda} {item_venda["nome_item"]}\nTotal Venda: P$ {valor_venda}\n'
+                    f'Poké Créditos: P$ {player["poke_creditos"]["info"]}\033[m')
+                print('-=' * 20)
+            else:
+                print('Voce não possui essa quantidade de itens!!!')
 
         elif opcao == 3:
             break
@@ -425,8 +461,6 @@ def ganhar_xp(xp_recebida, type_pokemon):
             xp *= 1
         case 'shiny':
             xp *= 2
-        case 'lendario':
-            xp *= 3
 
     player['xp_atual']['info'] += xp
 
@@ -438,12 +472,12 @@ def ganhar_xp(xp_recebida, type_pokemon):
         player['xp_atual']['info'] = leftover
         player['nivel_atual']['info'] += 1
         player['poke_creditos']['info'] += 300
-        inventario['pokeball']['qtde'] += 5
+        # inventario['pokeball']['qtde'] += 5
 
         print('-=' * 20)
         print(f'\033[1;32mSubiu para o nível {player["nivel_atual"]["info"]}!\033[m'.center(50))
         print(f'\033[1;32m Bônus de +P$ 300 Poké Créditos!\033[m'.center(50))
-        print(f'\033[1;32m Bônus de +5 Pokeball!\033[m'.center(50))
+        # print(f'\033[1;32m Bônus de +5 Pokeball!\033[m'.center(50))
         print('-=' * 20)
 
     elif player['xp_atual']['info'] >= level_dict[str(player['nivel_atual']['info'])] and player['nivel_atual'][
@@ -459,7 +493,6 @@ def ganhar_xp(xp_recebida, type_pokemon):
 
 # drop de poke creditos
 def loot_poke_credito(type_pokemon):
-    print(type_pokemon)
     loot = randint(50, 100)
 
     match type_pokemon:
@@ -467,7 +500,7 @@ def loot_poke_credito(type_pokemon):
             loot *= 1
         case 'normal_shiny':
             loot *= 2
-        case 'lendario':
+        case 'lendario_normal':
             loot *= 3
         case 'lendario_shiny':
             loot *= 4
@@ -478,11 +511,12 @@ def loot_poke_credito(type_pokemon):
 
 
 def drop_itens():
-    random_number = randint(1, 186)
-    for item in inventario.values():
-        if item['drop_rate_1'] <= random_number <= item['drop_rate_2']:
-            print(f"\033[1;32m>>> Voce dropou o item: {item['nome_item']} <<<\033[m".center(50))
-            item['qtde'] += 1
+    chance_drop = randint(1, 10)
+    if chance_drop <= 5:
+        random_number = randint(0, 41)
+        item_dropado = drop_list[random_number]
+        print(f"\033[1;32m>>> Voce dropou o item: {item_dropado['nome_item']} <<<\033[m".center(50))
+        item_dropado['qtde'] += 1
 
 
 def mudar_rota():
